@@ -54,13 +54,12 @@ const TRANSLATIONS = {
     "Your message": "Fariintaada",
     "Tell us what you need help with…": "Noo sheeg caawimaadda aad u baahan tahay…",
     "Send message": "Dir fariinta",
-    "Demo contact form: messages are not sent until a support service is connected.": "Foom tusaale ah: fariimaha lama diro ilaa adeeg taageero lagu xiro.",
+    "Submitting opens your email app with the message ready to send.": "Markaad dirto, barnaamijka iimaylkaaga ayaa furmaya iyadoo fariintu diyaar u tahay in la diro.",
     "Email support:": "Taageero iimayl:",
-    "(demo address)": "(cinwaan tusaale ah)",
     "Nairobi Go community": "Bulshada Nairobi Go",
     "Help make local deliveries safe and respectful for everyone.": "Ka caawi in gaarsiinta maxalliga ahi qof walba u noqoto ammaan iyo ixtiraam.",
     "Protect personal information and meet in safe, agreed locations.": "Ilaali xogta gaarka ah, kuna kulma meel ammaan ah oo la isla oggol yahay.",
-    "Contact form demo only; no message was sent.": "Foomka xiriirku waa tusaale; wax fariin ah lama dirin.",
+    "Your email app is opening with your message.": "Barnaamijka iimaylkaaga ayaa furmaya iyadoo fariintaadu la socoto.",
     "Switch to light mode": "U beddel muuqaalka iftiinka",
     "Switch to dark mode": "U beddel muuqaalka mugdiga",
     "Settings": "Dejinta",
@@ -111,7 +110,6 @@ const TRANSLATIONS = {
     "Rate courier · Report issue within 48h": "Qiimee gaarsiiyaha · soo sheeg dhib 48 saac gudahood",
     "Rate courier · Delivery complete": "Qiimee gaarsiiyaha · gaarsiin dhammaatay",
     "Your route": "Jidkaaga",
-    "Contact form demo only; no message was sent.": "Foomka xiriirku waa tusaale; wax fariin ah lama dirin.",
     "Be respectful to senders, couriers, and neighbours.": "Ixtiraam dirayaasha, gaarsiiyeyaasha iyo deriska.",
     "Only accept deliveries you can safely carry.": "Aqbal oo keliya gaarsiinnada aad si ammaan ah u qaadi karto.",
     "Keep communication clear and report problems promptly.": "Isgaarsiinta caddee oo dhibaatooyinka si degdeg ah u soo sheeg.",
@@ -273,13 +271,12 @@ const TRANSLATIONS = {
     "Your message": "Ujumbe wako",
     "Tell us what you need help with…": "Tuambie unahitaji msaada gani…",
     "Send message": "Tuma ujumbe",
-    "Demo contact form: messages are not sent until a support service is connected.": "Fomu ya majaribio: ujumbe hautatumwa hadi huduma ya msaada iunganishwe.",
+    "Submitting opens your email app with the message ready to send.": "Unapotuma, programu yako ya barua pepe itafunguka na ujumbe ukiwa tayari kutumwa.",
     "Email support:": "Msaada wa barua pepe:",
-    "(demo address)": "(anwani ya majaribio)",
     "Nairobi Go community": "Jamii ya Nairobi Go",
     "Help make local deliveries safe and respectful for everyone.": "Saidia kufanya usafirishaji wa eneo hili uwe salama na wenye heshima kwa wote.",
     "Protect personal information and meet in safe, agreed locations.": "Linda taarifa binafsi na mkutane sehemu salama mlizokubaliana.",
-    "Contact form demo only; no message was sent.": "Fomu ya mawasiliano ni ya majaribio; hakuna ujumbe uliotumwa.",
+    "Your email app is opening with your message.": "Programu yako ya barua pepe inafunguka ikiwa na ujumbe wako.",
     "Switch to light mode": "Badili kwenda mwonekano wa mwanga",
     "Switch to dark mode": "Badili kwenda mwonekano wa giza",
     "Settings": "Mipangilio",
@@ -676,15 +673,20 @@ function openInfoModal(section = "contact") {
   modal.className = "modal-backdrop";
   modal.innerHTML = contact
     ? `<section class="modal" role="dialog" aria-modal="true" aria-labelledby="info-title"><div class="modal-header"><div><h2 id="info-title">Contact Nairobi Go</h2><p>Get help with a delivery or talk to our community team.</p></div><button class="close-button" data-action="close" aria-label="Close">×</button></div>
-      <form id="contact-form" class="auth-step"><div class="field"><label for="contact-topic">How can we help?</label><select id="contact-topic"><option>Delivery support</option><option>Courier onboarding</option><option>Payments</option><option>Community feedback</option></select></div><div class="field"><label for="contact-message">Your message</label><textarea id="contact-message" maxlength="1000" required placeholder="Tell us what you need help with…"></textarea></div><button class="primary-button" type="submit">Send message</button><p class="disclaimer">Demo contact form: messages are not sent until a support service is connected.</p></form>
-      <p class="contact-email">Email support: <a href="mailto:hello@nairobigo.example">hello@nairobigo.example</a> <span>(demo address)</span></p></section>`
+      <form id="contact-form" class="auth-step"><div class="field"><label for="contact-topic">How can we help?</label><select id="contact-topic"><option>Delivery support</option><option>Courier onboarding</option><option>Payments</option><option>Community feedback</option></select></div><div class="field"><label for="contact-message">Your message</label><textarea id="contact-message" maxlength="1000" required placeholder="Tell us what you need help with…"></textarea></div><button class="primary-button" type="submit">Send message</button><p class="disclaimer">Submitting opens your email app with the message ready to send.</p></form>
+      <p class="contact-email">Email support: <a href="mailto:mohanmoha708@gmail.com">mohanmoha708@gmail.com</a></p></section>`
     : `<section class="modal" role="dialog" aria-modal="true" aria-labelledby="info-title"><div class="modal-header"><div><h2 id="info-title">Nairobi Go community</h2><p>Help make local deliveries safe and respectful for everyone.</p></div><button class="close-button" data-action="close" aria-label="Close">×</button></div><div class="community-guidelines"><h3>Community guidelines</h3><ul><li>Be respectful to senders, couriers, and neighbours.</li><li>Only accept deliveries you can safely carry.</li><li>Keep communication clear and report problems promptly.</li><li>Protect personal information and meet in safe, agreed locations.</li></ul><button class="secondary-button" data-action="contact">Contact us</button></div></section>`;
   modal.innerHTML = translateMarkup(modal.innerHTML);
   if (contact) {
     modal.querySelector("#contact-form").addEventListener("submit", event => {
       event.preventDefault();
       if (!event.currentTarget.reportValidity()) return;
-      notify(t("Contact form demo only; no message was sent."));
+      const topic = modal.querySelector("#contact-topic").value;
+      const message = modal.querySelector("#contact-message").value.trim();
+      const subject = `Nairobi Go support: ${topic}`;
+      const body = `Topic: ${topic}\n\n${message}`;
+      window.location.href = `mailto:mohanmoha708@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      notify("Your email app is opening with your message.");
     });
   }
   document.body.append(modal);

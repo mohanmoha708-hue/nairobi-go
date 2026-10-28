@@ -47,8 +47,7 @@ h1, h2, h3, p { margin-top: 0; }
 h1, h2, h3 { font-family: Manrope, sans-serif; }
 h1 { margin-bottom: 8px; font-size: clamp(30px, 4vw, 43px); line-height: 1.12; letter-spacing: -1.7px; }
 .subtitle { margin: 0; color: var(--muted); font-size: 14px; }
-.location-pill { border: 1px solid var(--line); border-radius: 24px; background: #fff; padding: 11px 15px; color: #575d54; font-size: 12px; font-weight: 600; }
-.location-pill span { margin-right: 5px; color: var(--green); }
+.location-pill { border: 1px solid var(--line); border-radius: 24px; background: #fff; padding: 11px 15px; color: #575d54; font-size: 12px; font-weight: 600; }.location-pill span { margin-right: 5px; color: var(--green); }
 .dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.17fr) minmax(320px, .83fr); gap: 25px; align-items: start; }
 .column { display: grid; gap: 22px; }
 .card { border: 1px solid #edf0eb; border-radius: 19px; background: var(--surface); box-shadow: var(--shadow); }
