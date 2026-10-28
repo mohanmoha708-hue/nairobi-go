@@ -459,6 +459,9 @@ let state = loadState();
 let authRole = "sender";
 let currentTab = "available";
 let profilePhotoPreview = "";
+let currentArea = Object.prototype.hasOwnProperty.call(AREAS, loadPreference("location", "Westlands"))
+  ? loadPreference("location", "Westlands")
+  : "Westlands";
 let language = ["en", "so", "sw"].includes(loadPreference("language", "en")) ? loadPreference("language", "en") : "en";
 let darkMode = loadPreference("theme", "light") === "dark";
 
@@ -558,6 +561,16 @@ function routeDistance(from, to) {
   return Math.max(.8, Math.round(6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h)) * 1.3 * 10) / 10);
 }
 
+function nearestArea(latitude, longitude) {
+  return Object.entries(AREAS).reduce((nearest, [area, coordinates]) => {
+    const distance = Math.hypot(
+      (coordinates[0] - latitude) * 111,
+      (coordinates[1] - longitude) * 111 * Math.cos(latitude * Math.PI / 180)
+    );
+    return distance < nearest.distance ? { area, distance } : nearest;
+  }, { area: "Westlands", distance: Infinity }).area;
+}
+
 function deliveryFee(distance) {
   return Math.round(BASE_FEE + distance * RATE_PER_KM);
 }
@@ -606,7 +619,7 @@ function senderDashboard() {
   const completed = state.deliveries.filter(delivery => delivery.status === "delivered");
   const locale = { en: "en-KE", so: "so-KE", sw: "sw-KE" }[language] || "en-KE";
   const day = new Intl.DateTimeFormat(locale, { weekday: "long", timeZone: "Africa/Nairobi" }).format(new Date()).toUpperCase();
-  return `<div class="welcome-row"><div><p class="eyebrow">${t(day)}, NAIROBI</p><h1>${t("Good afternoon")}, ${escapeHtml((state.user.name || "there").split(" ")[0])}.</h1><p class="subtitle">What can we help you get moving today?</p></div><div class="location-pill"><span>●</span> Nairobi, Kenya　⌄</div></div>
+  return `<div class="welcome-row"><div><p class="eyebrow">${t(day)}, NAIROBI</p><h1>${t("Good afternoon")}, ${escapeHtml((state.user.name || "there").split(" ")[0])}.</h1><p class="subtitle">What can we help you get moving today?</p></div><button class="location-pill" type="button" data-action="location" aria-label="Change location"><span>●</span> ${escapeHtml(currentArea)}, Nairobi　⌄</button></div>
   <div class="dashboard-grid"><div class="column">
     <section class="hero-card"><div class="hero-content"><p class="eyebrow">YOUR CITY, AT YOUR SERVICE</p><h2>Send anything.<br>Get it there.</h2><p>From keys you left behind to your weekend shopping. A trusted local courier is just around the corner.</p><button class="primary-button" data-action="new-delivery">Book a delivery <span class="button-icon">→</span></button></div></section>
     <div class="stats-row"><article class="card stat-card"><div class="stat-label">Deliveries</div><div class="stat-value">${completed.length}</div><div class="stat-note">${completed.length ? "Completed so far" : "Your first is waiting"}</div></article><article class="card stat-card"><div class="stat-label">Go points</div><div class="stat-value green">${state.points.toLocaleString()}</div><div class="stat-note">Redeem on your next trip</div></article><article class="card stat-card"><div class="stat-label">Your rating</div><div class="stat-value">${completed.length ? "5.0 ★" : "—"}</div><div class="stat-note">${completed.length ? "As a sender" : "After your first delivery"}</div></article></div>
@@ -627,15 +640,15 @@ function deliveryItem(delivery) {
 
 function courierDashboard() {
   const accepted = state.deliveries.filter(delivery => delivery.courierId === state.user.phone && !["delivered", "disputed"].includes(delivery.status));
-  const available = state.offers.filter(offer => !offer.acceptedBy).filter(offer => currentTab === "available" || offer.pickup === "Westlands");
+  const available = state.offers.filter(offer => !offer.acceptedBy).filter(offer => currentTab === "available" || offer.pickup === currentArea);
   const pendingPayout = state.deliveries
     .filter(delivery => delivery.courierId === state.user.phone && delivery.status === "delivered" && !delivery.payoutReleased)
     .reduce((sum, delivery) => sum + (delivery.payout || 0), 0);
-  return `<div class="welcome-row"><div><p class="eyebrow">${t("YOUR CITY, YOUR ROUTE")}</p><h1>${t("Good afternoon")}, ${escapeHtml((state.user.name || "there").split(" ")[0])}.</h1><p class="subtitle">Find a delivery that fits your route.</p></div><div class="location-pill"><span>●</span> Near Westlands, Nairobi　⌄</div></div>
+  return `<div class="welcome-row"><div><p class="eyebrow">${t("YOUR CITY, YOUR ROUTE")}</p><h1>${t("Good afternoon")}, ${escapeHtml((state.user.name || "there").split(" ")[0])}.</h1><p class="subtitle">Find a delivery that fits your route.</p></div><button class="location-pill" type="button" data-action="location" aria-label="Change location"><span>●</span> Near ${escapeHtml(currentArea)}, Nairobi　⌄</button></div>
   <div class="dashboard-grid"><div class="column">
     <section class="card courier-earnings"><div><div class="earnings-caption">Your earnings · this week</div><div class="earnings-total">${money(state.earnings)}</div><div class="earnings-caption">12% platform commission · paid to M-Pesa</div>${pendingPayout ? `<div class="earnings-caption pending-caption">${money(pendingPayout)} pending · 48-hour safety window</div>` : ""}</div><div class="earnings-icon">↗</div></section>
     <section class="card section-card"><div class="section-heading"><h3>Delivery requests near you</h3><span class="subtle-label">${state.offers.filter(offer => !offer.acceptedBy).length} nearby</span></div>
-      <div class="section-nav"><button class="nav-pill ${currentTab === "available" ? "active" : ""}" data-action="courier-tab" data-tab="available">All nearby</button><button class="nav-pill ${currentTab === "westlands" ? "active" : ""}" data-action="courier-tab" data-tab="westlands">Near Westlands</button></div>
+      <div class="section-nav"><button class="nav-pill ${currentTab === "available" ? "active" : ""}" data-action="courier-tab" data-tab="available">All nearby</button><button class="nav-pill ${currentTab === "westlands" ? "active" : ""}" data-action="courier-tab" data-tab="westlands">Near ${escapeHtml(currentArea)}</button></div>
       <div class="delivery-list">${available.length ? available.map(offerCard).join("") : `<div class="empty-state"><span>🛣️</span>No requests in this area right now. Check back in a bit.</div>`}</div></section>
     <section class="card section-card"><div class="section-heading"><h3>Your active deliveries</h3><span class="subtle-label">${accepted.length} on your route</span></div><div class="delivery-list">${accepted.length ? accepted.map(courierActiveCard).join("") : `<div class="empty-state">Accept a request and it’ll show up here.</div>`}</div></section>
   </div><div class="column right-column">
@@ -665,6 +678,53 @@ function mapIllustration() {
 
 function footer() {
   return `<footer class="footer"><span>© ${new Date().getFullYear()} Nairobi Go · ${t("Made for Nairobi, by Nairobi.")}</span><div class="footer-links"><a href="#" data-action="how">How it works</a><a href="#" data-action="contact">Contact us</a><a href="#" data-action="community">Community</a></div></footer>`;
+}
+
+function openLocationPicker() {
+  const modal = document.createElement("div");
+  modal.className = "modal-backdrop";
+  modal.innerHTML = `<section class="modal" role="dialog" aria-modal="true" aria-labelledby="location-title">
+    <div class="modal-header"><div><h2 id="location-title">Your location</h2><p>Choose your Nairobi area or use your device location.</p></div><button class="close-button" data-action="close" aria-label="Close">×</button></div>
+    <form id="location-form"><div class="field"><label for="location-area">Nairobi area</label><select id="location-area" name="area">${areaOptions(currentArea)}</select></div>
+      <div class="modal-actions"><button type="button" class="outline-button" data-action="use-location">Use my current location</button><button type="submit" class="primary-button">Save location</button></div>
+      <p class="disclaimer">Device location needs browser permission. You can also choose an area manually.</p>
+    </form></section>`;
+  modal.innerHTML = translateMarkup(modal.innerHTML);
+  document.body.append(modal);
+  modal.querySelector("#location-form").addEventListener("submit", event => {
+    event.preventDefault();
+    currentArea = modal.querySelector("#location-area").value;
+    currentTab = "available";
+    setPreference("location", currentArea);
+    closeModal();
+    render();
+    notify(`Location updated to ${currentArea}.`);
+  });
+}
+
+function useDeviceLocation() {
+  if (!navigator.geolocation) {
+    notify("Device location is not available in this browser. Choose an area manually.");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(position => {
+    currentArea = nearestArea(position.coords.latitude, position.coords.longitude);
+    currentTab = "available";
+    setPreference("location", currentArea);
+    closeModal();
+    render();
+    notify(`Location updated to ${currentArea}.`);
+  }, error => {
+    if (error.code === error.PERMISSION_DENIED) {
+      notify("Location permission was denied. Allow it in your browser settings or choose an area manually.");
+    } else if (error.code === error.POSITION_UNAVAILABLE) {
+      notify("Your device location is unavailable right now. Choose an area manually.");
+    } else if (error.code === error.TIMEOUT) {
+      notify("Getting your location timed out. Try again or choose an area manually.");
+    } else {
+      notify("Could not get your location. Choose an area manually.");
+    }
+  }, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
 }
 
 function openInfoModal(section = "contact") {
@@ -703,7 +763,7 @@ function openDeliveryModal() {
   modal.innerHTML = `<section class="modal" role="dialog" aria-modal="true" aria-labelledby="delivery-title">
     <div class="modal-header"><div><h2 id="delivery-title">Book a delivery</h2><p>Anything you need, anywhere in Nairobi.</p></div><button class="close-button" data-action="close" aria-label="Close">×</button></div>
     <form id="delivery-form"><div class="form-grid">
-      <div class="field"><label for="pickup">Pickup area</label><select id="pickup" name="pickup">${areaOptions("Westlands")}</select></div>
+      <div class="field"><label for="pickup">Pickup area</label><select id="pickup" name="pickup">${areaOptions(currentArea)}</select></div>
       <div class="field"><label for="dropoff">Drop-off area</label><select id="dropoff" name="dropoff">${areaOptions("CBD")}</select></div>
       <div class="field full"><label for="item">What are we delivering?</label><input id="item" name="item" required maxlength="80" placeholder="e.g. House keys, a care package"></div>
       <div class="field"><label for="weight">Item weight</label><input id="weight" name="weight" type="number" min="5" max="50" step="0.1" value="5" required></div>
@@ -947,6 +1007,8 @@ function handleAction(event) {
   if (!button) return;
   const action = button.dataset.action;
   if (action === "new-delivery") openDeliveryModal();
+  if (action === "location") openLocationPicker();
+  if (action === "use-location") useDeviceLocation();
   if (action === "auth") openAuth();
   if (action === "close") closeModal();
   if (action === "profile") openProfile();
