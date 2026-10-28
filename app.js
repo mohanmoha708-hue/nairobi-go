@@ -81,14 +81,14 @@ const TRANSLATIONS = {
     "Language": "Luqadda",
     "Distance and delivery fee are estimates based on area. Final fare may vary slightly with the route.": "Masaafada iyo khidmadda waa qiyaas ku salaysan aagga. Qiimaha kama dambaysta ahi wax yar ayuu ku kala duwanaan karaa jidka.",
     "Go points discount": "Dhimista dhibcaha Go",
-    "Your session is saved on this device until you log out. Identity images are not saved or uploaded in this demo.": "Fadhigaagu wuxuu ku kaydsan yahay qalabkan ilaa aad ka baxdo. Sawirrada aqoonsiga laguma kaydiyo ama laguma shubo tusaalahan.",
+    "Your session is saved on this device until you log out. Profile photos stay on this device. Courier ID photos are sent to AWS Textract for text checks.": "Fadhigaagu qalabkan ayuu ku kaydsan yahay ilaa aad ka baxdo. Sawirka astaanta qalabkan ayuu joogayaa. Sawirrada aqoonsiga gaarsiiyaha waxaa loo diraa AWS Textract si qoraalka loo hubiyo.",
     "e.g. House keys, a care package": "tusaale: furayaasha guriga, xirmo hadiyad ah",
     "Pickup details, gate code, handling instructions…": "Faahfaahinta qaadista, lambarka albaabka, tilmaamaha maaraynta…",
     "Anything you need, anywhere in Nairobi.": "Wax kasta oo aad u baahan tahay, meel kasta oo Nairobi ah.",
     "Your payment is held securely until delivery is confirmed. Couriers are independent members of the community.": "Lacagtaada si ammaan ah ayaa loo hayaa ilaa gaarsiinta la xaqiijiyo. Gaarsiiyeyaashu waa xubno bulshada ka tirsan oo madax-bannaan.",
     "Demo mode: enter any 6 digits. SMS delivery requires a configured authentication provider.": "Habka tusaalaha: geli 6 lambar kasta. SMS-ku wuxuu u baahan yahay adeeg xaqiijin.",
     "SMS delivery requires a configured authentication provider.": "Dirista SMS-ku waxay u baahan tahay adeeg xaqiijin.",
-    "Demo only: identity photos are selected on this device and are not uploaded, verified, or saved. SMS verification requires an authentication provider.": "Tusaale keliya: sawirrada aqoonsiga waxaa laga doortaa qalabkan, lamana raro, xaqiijiyo ama kaydiyo. Xaqiijinta SMS-ku waxay u baahan tahay adeeg.",
+    "Profile photos stay on this device. Courier National ID images are sent to AWS Textract for automated text checks and are not stored by Nairobi Go. OCR is not proof of authenticity. SMS verification requires an authentication provider.": "Sawirrada astaantu qalabkan ayay joogaan. Sawirrada kaarka aqoonsiga gaarsiiyaha waxaa loo diraa AWS Textract si qoraalka loo hubiyo, mana kaydiso Nairobi Go. OCR ma xaqiijiyo saxnimada aqoonsiga. Xaqiijinta SMS-ku waxay u baahan tahay adeeg.",
     "Email support:": "Taageero iimayl:",
     "Finding a courier": "Gaarsiiye ayaa la raadinayaa",
     "Courier accepted": "Gaarsiiyaha ayaa aqbalay",
@@ -238,8 +238,11 @@ const TRANSLATIONS = {
     "Role": "Doorka",
     "Vehicle": "Gaadiidka",
     "Motorcycle": "Mooto",
-    "National ID · front": "Kaarka aqoonsiga · hore",
-    "National ID · back": "Kaarka aqoonsiga · gadaal",
+    "Kenyan National ID · front": "Kaarka aqoonsiga Kenya · hore",
+    "Kenyan National ID · back": "Kaarka aqoonsiga Kenya · gadaal",
+    "Upload a clear photo of the front of your Kenyan National ID only (max 10 MB).": "Soo geli sawir cad oo dhinaca hore ee kaarka aqoonsiga Kenya oo keliya (ugu badnaan 10 MB).",
+    "Upload a clear photo of the back of your Kenyan National ID only (max 10 MB).": "Soo geli sawir cad oo dhinaca dambe ee kaarka aqoonsiga Kenya oo keliya (ugu badnaan 10 MB).",
+    "I confirm these are photos of my own Kenyan National ID, front and back, not another document, and consent to AWS Textract checking the text.": "Waxaan xaqiijinayaa in kuwani yihiin sawirrada kaarka aqoonsiga Kenya ee aniga ii gaarka ah, hore iyo gadaal, ee aysan ahayn dukumenti kale, waxaanan oggolahay in AWS Textract hubiyo qoraalka.",
     "Join Nairobi Go": "Ku biir Nairobi Go",
     "One number. Your whole city.": "Hal lambar. Magaaladaada oo dhan.",
     "How will you use Nairobi Go?": "Sidee ayaad u isticmaali doontaa Nairobi Go?",
@@ -298,14 +301,14 @@ const TRANSLATIONS = {
     "Language": "Lugha",
     "Distance and delivery fee are estimates based on area. Final fare may vary slightly with the route.": "Umbali na ada ni makadirio kulingana na eneo. Bei ya mwisho inaweza kubadilika kidogo kulingana na njia.",
     "Go points discount": "Punguzo la pointi za Go",
-    "Your session is saved on this device until you log out. Identity images are not saved or uploaded in this demo.": "Kikao chako huhifadhiwa kwenye kifaa hiki hadi utakapotoka. Picha za kitambulisho hazihifadhiwi wala kupakiwa kwenye jaribio hili.",
+    "Your session is saved on this device until you log out. Profile photos stay on this device. Courier ID photos are sent to AWS Textract for text checks.": "Kikao chako huhifadhiwa kwenye kifaa hiki hadi utoke. Picha ya wasifu hubaki kwenye kifaa hiki. Picha za kitambulisho cha msafirishaji hutumwa kwa AWS Textract ili kuchunguza maandishi.",
     "e.g. House keys, a care package": "mfano: funguo za nyumba, kifurushi cha zawadi",
     "Pickup details, gate code, handling instructions…": "Maelezo ya kuchukua, msimbo wa lango, maagizo ya kushughulikia…",
     "Anything you need, anywhere in Nairobi.": "Chochote unachohitaji, popote Nairobi.",
     "Your payment is held securely until delivery is confirmed. Couriers are independent members of the community.": "Malipo yako yanahifadhiwa kwa usalama hadi usafirishaji uthibitishwe. Wasafirishaji ni wanajamii huru.",
     "Demo mode: enter any 6 digits. SMS delivery requires a configured authentication provider.": "Hali ya jaribio: weka tarakimu 6 zozote. SMS inahitaji huduma ya uthibitishaji.",
     "SMS delivery requires a configured authentication provider.": "Kutuma SMS kunahitaji huduma ya uthibitishaji.",
-    "Demo only: identity photos are selected on this device and are not uploaded, verified, or saved. SMS verification requires an authentication provider.": "Jaribio pekee: picha za kitambulisho huchaguliwa kwenye kifaa hiki na hazipakwi, hazihakikishwi wala kuhifadhiwa. Uthibitishaji wa SMS unahitaji huduma.",
+    "Profile photos stay on this device. Courier National ID images are sent to AWS Textract for automated text checks and are not stored by Nairobi Go. OCR is not proof of authenticity. SMS verification requires an authentication provider.": "Picha za wasifu hubaki kwenye kifaa hiki. Picha za kitambulisho cha msafirishaji hutumwa kwa AWS Textract kuchunguza maandishi na hazihifadhiwi na Nairobi Go. OCR haithibitishi uhalisi. Uthibitishaji wa SMS unahitaji huduma.",
     "Email support:": "Msaada wa barua pepe:",
     "Finding a courier": "Tunatafuta msafirishaji",
     "Courier accepted": "Msafirishaji amekubali",
@@ -445,8 +448,11 @@ const TRANSLATIONS = {
     "Role": "Jukumu",
     "Vehicle": "Gari",
     "Motorcycle": "Pikipiki",
-    "National ID · front": "Kitambulisho · mbele",
-    "National ID · back": "Kitambulisho · nyuma",
+    "Kenyan National ID · front": "Kitambulisho cha Kenya · mbele",
+    "Kenyan National ID · back": "Kitambulisho cha Kenya · nyuma",
+    "Upload a clear photo of the front of your Kenyan National ID only (max 10 MB).": "Pakia picha wazi ya mbele ya kitambulisho chako cha Kenya pekee (isiyozidi MB 10).",
+    "Upload a clear photo of the back of your Kenyan National ID only (max 10 MB).": "Pakia picha wazi ya nyuma ya kitambulisho chako cha Kenya pekee (isiyozidi MB 10).",
+    "I confirm these are photos of my own Kenyan National ID, front and back, not another document, and consent to AWS Textract checking the text.": "Ninathibitisha kuwa hizi ni picha za kitambulisho changu cha Kenya, mbele na nyuma, si hati nyingine, na ninakubali AWS Textract ikague maandishi.",
     "Join Nairobi Go": "Jiunge na Nairobi Go",
     "One number. Your whole city.": "Nambari moja. Jiji lako lote.",
     "How will you use Nairobi Go?": "Utatumiaje Nairobi Go?",
@@ -884,11 +890,12 @@ function openAuth(initialRole = "sender") {
     <div id="courier-fields" class="auth-step courier-fields" hidden>
       <div class="vehicle-only"><span class="vehicle-icon">🏍️</span><span><strong>Motorcycle couriers only</strong><small>Only motorcycles are supported on Nairobi Go.</small></span></div>
       <div class="field"><label for="vehiclePlate">Motorcycle number plate</label><input id="vehiclePlate" name="vehiclePlate" maxlength="12" pattern="[A-Za-z0-9 -]{5,12}" placeholder="e.g. KDA 123A" autocomplete="off"><span class="upload-hint">Enter the registration shown on your motorcycle.</span></div>
-      <div class="field"><label for="idFront">National ID · front</label><input id="idFront" name="idFront" type="file" accept="image/*" capture="environment"><span class="upload-hint">Upload a clear photo of the front of your ID (max 10 MB).</span></div>
-      <div class="field"><label for="idBack">National ID · back</label><input id="idBack" name="idBack" type="file" accept="image/*" capture="environment"><span class="upload-hint">Upload a clear photo of the back of your ID (max 10 MB).</span></div>
+      <div class="field"><label for="idFront">Kenyan National ID · front</label><input id="idFront" name="idFront" type="file" accept="image/jpeg,image/png" capture="environment"><span class="upload-hint">Upload a clear photo of the front of your Kenyan National ID only (max 5 MB).</span></div>
+      <div class="field"><label for="idBack">Kenyan National ID · back</label><input id="idBack" name="idBack" type="file" accept="image/jpeg,image/png" capture="environment"><span class="upload-hint">Upload a clear photo of the back of your Kenyan National ID only (max 5 MB).</span></div>
+      <label class="id-confirmation"><input id="idConfirm" name="idConfirm" type="checkbox" required><span>I confirm these are photos of my own Kenyan National ID, front and back, not another document, and consent to AWS Textract checking the text.</span></label>
     </div>
     <button class="primary-button" type="submit">Send me a code <span class="button-icon">→</span></button></form>
-    <p class="disclaimer">Demo only: identity photos are selected on this device and are not uploaded, verified, or saved. SMS verification requires an authentication provider.</p></section>`;
+    <p class="disclaimer">Profile photos stay on this device. Courier National ID images are sent to AWS Textract for automated text checks and are not stored by Nairobi Go. OCR is not proof of authenticity. SMS verification requires an authentication provider.</p></section>`;
   modal.innerHTML = translateMarkup(modal.innerHTML);
   document.body.append(modal);
   modal.querySelector("#auth-form").addEventListener("submit", requestOtp);
@@ -897,14 +904,14 @@ function openAuth(initialRole = "sender") {
     modal.querySelectorAll("[data-auth-role]").forEach(choice => choice.classList.toggle("selected", choice === button));
     const courierFields = modal.querySelector("#courier-fields");
     courierFields.hidden = authRole !== "courier";
-    ["vehiclePlate", "idFront", "idBack"].forEach(id => {
+    ["vehiclePlate", "idFront", "idBack", "idConfirm"].forEach(id => {
       modal.querySelector(`#${id}`).required = authRole === "courier";
     });
   }));
   if (initialRole === "courier") modal.querySelector('[data-auth-role="courier"]').click();
 }
 
-function requestOtp(event) {
+async function requestOtp(event) {
   event.preventDefault();
   const form = event.currentTarget;
   const name = String(new FormData(form).get("name") || "").trim();
@@ -912,12 +919,25 @@ function requestOtp(event) {
   const vehiclePlate = String(new FormData(form).get("vehiclePlate") || "").trim().toUpperCase();
   const idFront = form.querySelector("#idFront").files[0];
   const idBack = form.querySelector("#idBack").files[0];
+  const idConfirm = form.querySelector("#idConfirm").checked;
   const uploads = [profilePhoto, ...(authRole === "courier" ? [idFront, idBack] : [])];
   for (const file of uploads) {
     if (!file || !file.type.startsWith("image/") || file.size > 10 * 1024 * 1024) {
       notify("Choose a valid image file no larger than 10 MB for each required photo.");
       return;
     }
+  }
+  if (authRole === "courier" && [idFront, idBack].some(file => !["image/jpeg", "image/png"].includes(file.type))) {
+    notify("National ID photos must be JPEG or PNG images.");
+    return;
+  }
+  if (authRole === "courier" && [idFront, idBack].some(file => file.size > 5 * 1024 * 1024)) {
+    notify("Each National ID photo must be 5 MB or smaller.");
+    return;
+  }
+  if (authRole === "courier" && !idConfirm) {
+    form.querySelector("#idConfirm").reportValidity();
+    return;
   }
   if (authRole === "courier" && !/^[A-Z0-9 -]{5,12}$/.test(vehiclePlate)) {
     form.querySelector("#vehiclePlate").setCustomValidity("Enter a valid motorcycle registration plate.");
@@ -935,6 +955,25 @@ function requestOtp(event) {
     return;
   }
   const phone = digits.startsWith("+254") ? digits : digits.startsWith("254") ? `+${digits}` : digits.startsWith("0") ? `+254${digits.slice(1)}` : `+254${digits}`;
+  if (authRole === "courier") {
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalLabel = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = "Checking National ID photos…";
+    try {
+      await Promise.all([
+        verifyNationalIdPhoto(idFront, "front"),
+        verifyNationalIdPhoto(idBack, "back")
+      ]);
+    } catch (error) {
+      console.error("Could not verify courier National ID images.", error);
+      notify(error.message || "National ID verification is unavailable. Please try again.");
+      return;
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = originalLabel;
+    }
+  }
   form.removeEventListener("submit", requestOtp);
   form.innerHTML = translateMarkup(`<div class="field"><label for="otp">Enter your 6-digit code</label><input id="otp" class="otp-digits" name="otp" required inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="••••••"></div><p class="disclaimer">Demo mode: enter any 6 digits. SMS delivery requires a configured authentication provider.</p><button class="primary-button" type="submit">Verify and continue</button>`);
   form.addEventListener("submit", event => {
@@ -954,12 +993,44 @@ function requestOtp(event) {
   form.querySelector("#otp").focus();
 }
 
+async function verifyNationalIdPhoto(file, side) {
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(offset, offset + chunkSize));
+  }
+  let response;
+  try {
+    response = await fetch("/api/verify-national-id", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ side, mimeType: file.type, imageBase64: btoa(binary) })
+    });
+  } catch (error) {
+    throw new Error("National ID verification service is unreachable. Start the Nairobi Go server and try again.");
+  }
+
+  let result;
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error("National ID verification returned an invalid response. Please try again.");
+  }
+  if (response.status === 422 || result.error === "document_not_recognized") {
+    throw new Error(`The uploaded ${side} image was not recognized as a Kenyan National ID. Use a clear photo of the correct side.`);
+  }
+  if (!response.ok || result.verified !== true) {
+    throw new Error("National ID verification is unavailable. Please try again later.");
+  }
+}
+
 function openProfile() {
   const modal = document.createElement("div");
   modal.className = "modal-backdrop";
   modal.dataset.modal = "true";
   modal.innerHTML = `<section class="modal" role="dialog" aria-modal="true" aria-labelledby="profile-title"><div class="modal-header"><div><h2 id="profile-title">Your profile</h2><p>Account and app preferences.</p></div><button class="close-button" data-action="close" aria-label="Close">×</button></div>
-  <div class="profile-panel"><div class="profile-photo-row">${profilePhotoPreview ? `<img class="profile-photo-large" src="${profilePhotoPreview}" alt="Your profile photo">` : `<span class="avatar">${escapeHtml((state.user.name || "A")[0])}</span>`}<span>Profile photo</span></div><div class="profile-row"><span>Name</span><strong>${escapeHtml(state.user.name)}</strong></div><div class="profile-row"><span>Phone</span><strong>${escapeHtml(state.user.phone)}</strong></div><div class="profile-row"><span>Role</span><strong>${state.user.role === "sender" ? "Sender" : "Courier"}</strong></div>${state.user.role === "courier" ? `<div class="profile-row"><span>Vehicle</span><strong>Motorcycle · ${escapeHtml(state.user.vehiclePlate || "")}</strong></div><div class="profile-row"><span>ID verification</span><strong>Photos selected · demo only</strong></div>` : ""}<div class="profile-row"><span>Go points</span><strong>${state.points.toLocaleString()}</strong></div><div class="profile-row"><span>Marketplace</span><strong>Independent couriers</strong></div><button class="outline-button logout-button" data-action="logout">Log out</button><p class="disclaimer">Your session is saved on this device until you log out. Identity images are not saved or uploaded in this demo.</p></div></section>`;
+  <div class="profile-panel"><div class="profile-photo-row">${profilePhotoPreview ? `<img class="profile-photo-large" src="${profilePhotoPreview}" alt="Your profile photo">` : `<span class="avatar">${escapeHtml((state.user.name || "A")[0])}</span>`}<span>Profile photo</span></div><div class="profile-row"><span>Name</span><strong>${escapeHtml(state.user.name)}</strong></div><div class="profile-row"><span>Phone</span><strong>${escapeHtml(state.user.phone)}</strong></div><div class="profile-row"><span>Role</span><strong>${state.user.role === "sender" ? "Sender" : "Courier"}</strong></div>${state.user.role === "courier" ? `<div class="profile-row"><span>Vehicle</span><strong>Motorcycle · ${escapeHtml(state.user.vehiclePlate || "")}</strong></div><div class="profile-row"><span>ID verification</span><strong>Text check passed · not identity-verified</strong></div>` : ""}<div class="profile-row"><span>Go points</span><strong>${state.points.toLocaleString()}</strong></div><div class="profile-row"><span>Marketplace</span><strong>Independent couriers</strong></div><button class="outline-button logout-button" data-action="logout">Log out</button><p class="disclaimer">Your session is saved on this device until you log out. Profile photos stay on this device. Courier ID photos are sent to AWS Textract for text checks.</p></div></section>`;
   modal.innerHTML = translateMarkup(modal.innerHTML);
   document.body.append(modal);
 }

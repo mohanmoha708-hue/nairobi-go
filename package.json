@@ -1,0 +1,12 @@
+{
+  "name": "nairobi-go",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@aws-sdk/client-textract": "^3.1159.0"
+  }
+}

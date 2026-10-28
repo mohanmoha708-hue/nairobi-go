@@ -150,6 +150,8 @@ h1 { margin-bottom: 8px; font-size: clamp(30px, 4vw, 43px); line-height: 1.12; l
 .field input[type="file"]::file-selector-button { margin-right: 9px; border: 0; border-radius: 6px; padding: 7px 9px; color: var(--green); background: var(--mint); font: 600 10px "DM Sans", sans-serif; cursor: pointer; }
 .upload-hint, .weight-hint { margin: -2px 0 0; color: #92988e; font-size: 9px; line-height: 1.5; }
 .courier-fields[hidden] { display: none; }
+.id-confirmation { display: flex; align-items: flex-start; gap: 9px; color: var(--ink); font-size: 11px; line-height: 1.5; cursor: pointer; }
+.id-confirmation input { flex: 0 0 auto; width: 16px; height: 16px; margin: 1px 0 0; accent-color: var(--green); }
 .vehicle-only { display: flex; align-items: center; gap: 11px; padding: 12px; border: 1px solid #e1ede0; border-radius: 10px; background: #f4f8f2; }
 .vehicle-icon { font-size: 23px; }.vehicle-only strong, .vehicle-only small { display: block; }.vehicle-only strong { margin-bottom: 3px; color: #335b3e; font-size: 11px; }.vehicle-only small { color: #858d81; font-size: 9px; }
 .field input:focus, .field select:focus, .field textarea:focus { border-color: #8cb99a; }
