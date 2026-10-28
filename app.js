@@ -12,6 +12,20 @@ const AREAS = {
   "Kasarani": [-1.222, 36.897],
   "Ngara": [-1.276, 36.826]
 };
+const MAP_POSITIONS = {
+  "Westlands": [35, 33],
+  "CBD": [59, 57],
+  "Kilimani": [48, 73],
+  "Kileleshwa": [41, 58],
+  "Lavington": [30, 67],
+  "Parklands": [58, 28],
+  "Upper Hill": [62, 79],
+  "Karen": [12, 86],
+  "South B": [75, 88],
+  "Eastleigh": [80, 40],
+  "Kasarani": [89, 15],
+  "Ngara": [64, 44]
+};
 
 const DEFAULT_STATE = {
   user: { name: "Alex Mwangi", phone: "+254 712 345 678", role: "sender" },
@@ -669,11 +683,20 @@ function courierActiveCard(delivery) {
 }
 
 function mapCard(title, subtitle) {
-  return `<section class="card map-card"><div class="map-head"><h3>${title}</h3><p>${subtitle}</p></div>${mapIllustration()}<div class="map-legend"><span><i class="legend-dot"></i>Couriers</span><span><i class="legend-dot orange"></i>Requests</span><span><i class="legend-dot blue"></i>You</span></div></section>`;
+  return `<section class="card map-card"><div class="map-head"><h3>${title}</h3><p>${subtitle}</p></div>${mapIllustration()}<div class="map-legend"><span>Tap a marker to choose your area</span><strong>${escapeHtml(currentArea)}</strong></div></section>`;
 }
 
 function mapIllustration() {
-  return `<div class="map-illustration" role="img" aria-label="Illustrated map of Nairobi with delivery locations"><span class="park"></span><span class="map-label one">WESTLANDS</span><span class="map-label two">PARKLANDS</span><span class="map-label three">KILIMANI</span><span class="map-label four">CBD</span><span class="map-pin p1"><span>⌂</span></span><span class="map-pin p2"><span>⌂</span></span><span class="map-pin p3"><span>⌂</span></span></div>`;
+  const areaPins = Object.keys(AREAS).map(area => {
+    const [left, top] = MAP_POSITIONS[area];
+    const selected = currentArea === area;
+    return `<button class="map-pin ${selected ? "selected" : ""}" type="button" data-action="map-area" data-area="${area}" style="left:${left}%;top:${top}%" aria-label="Set location to ${area}" aria-pressed="${selected}" title="${area}"><span>●</span></button>`;
+  }).join("");
+  return `<div class="map-illustration" role="group" aria-label="Choose a Nairobi area">
+    <span class="park"></span>
+    <span class="map-label one">WESTLANDS</span><span class="map-label two">PARKLANDS</span><span class="map-label three">KILIMANI</span><span class="map-label four">CBD</span>
+    ${areaPins}
+  </div>`;
 }
 
 function footer() {
@@ -1009,6 +1032,15 @@ function handleAction(event) {
   if (action === "new-delivery") openDeliveryModal();
   if (action === "location") openLocationPicker();
   if (action === "use-location") useDeviceLocation();
+  if (action === "map-area") {
+    const area = button.dataset.area;
+    if (!Object.prototype.hasOwnProperty.call(AREAS, area)) return;
+    currentArea = area;
+    currentTab = "available";
+    setPreference("location", currentArea);
+    render();
+    notify(`Location updated to ${currentArea}.`);
+  }
   if (action === "auth") openAuth();
   if (action === "close") closeModal();
   if (action === "profile") openProfile();
