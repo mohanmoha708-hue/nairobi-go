@@ -3,6 +3,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { TextractClient, DetectDocumentTextCommand } = require("@aws-sdk/client-textract");
 const { hasExpectedImageSignature, recognizesKenyanNationalId } = require("./id-verification");
+const { createSmsVerification } = require("./sms-verification");
 
 const ROOT = __dirname;
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
@@ -10,6 +11,7 @@ const MAX_REQUEST_BYTES = 7 * 1024 * 1024;
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 10;
 const rateLimits = new Map();
+const smsVerification = createSmsVerification();
 const publicFiles = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
@@ -116,6 +118,34 @@ function verifyNationalId(request, response) {
   });
 }
 
+async function handleSmsVerification(request, response, action) {
+  try {
+    const payload = await readJson(request);
+    const { phone, code } = payload || {};
+    const result = action === "send"
+      ? await smsVerification.sendCode(phone, request.socket.remoteAddress || "unknown")
+      : smsVerification.verifyCode(phone, code);
+    if (!result.ok) {
+      const status = result.error === "invalid_phone" || result.error === "invalid_code" ? 400
+        : result.error === "rate_limited" || result.error === "too_many_attempts" ? 429
+          : result.error === "sms_not_configured" || result.error === "sms_service_unavailable"
+            || result.error === "sms_send_failed" ? 503 : 400;
+      respond(response, status, { error: result.error });
+      return;
+    }
+    respond(response, 200, { verified: action === "verify" });
+  } catch (error) {
+    if (error.statusCode) {
+      respond(response, error.statusCode, {
+        error: error.statusCode === 413 ? "request_too_large" : "invalid_request"
+      });
+      return;
+    }
+    console.error("SMS verification request failed:", error.name || "UnknownError");
+    respond(response, 500, { error: "verification_unavailable" });
+  }
+}
+
 function serveFile(request, response, pathname) {
   const asset = publicFiles.get(pathname);
   if (request.method !== "GET" || !asset) {
@@ -156,6 +186,15 @@ const server = http.createServer((request, response) => {
       return;
     }
     verifyNationalId(request, response);
+    return;
+  }
+
+  if (pathname === "/api/auth/send-code" || pathname === "/api/auth/verify-code") {
+    if (request.method !== "POST") {
+      respond(response, 405, { error: "method_not_allowed" });
+      return;
+    }
+    handleSmsVerification(request, response, pathname.endsWith("send-code") ? "send" : "verify");
     return;
   }
 
