@@ -19,7 +19,8 @@ function createSmsVerification({
   env = process.env,
   fetchImpl = globalThis.fetch,
   now = Date.now,
-  makeCode = () => String(randomInt(0, 1_000_000)).padStart(6, "0")
+  makeCode = () => String(randomInt(0, 1_000_000)).padStart(6, "0"),
+  logger = console
 } = {}) {
   const challenges = new Map();
   const sendLimits = new Map();
@@ -91,12 +92,49 @@ function createSmsVerification({
     try {
       result = await response.json();
     } catch {
+      logger.info("Africa's Talking SMS response", JSON.stringify({
+        httpStatus: response.status,
+        providerReturnedError: !response.ok,
+        responseParsed: false,
+        hasExpectedRecipientData: false,
+        recipients: []
+      }));
       return { ok: false, error: "sms_send_failed" };
     }
     const recipients = result?.SMSMessageData?.Recipients;
-    const accepted = response.ok && Array.isArray(recipients)
+    const expectedPhone = normalizeRecipientNumber(phone);
+    const hasExpectedRecipientData = Array.isArray(recipients) && recipients.some(recipient =>
+      recipient && typeof recipient === "object"
+      && normalizeRecipientNumber(recipient.number) === expectedPhone
+    );
+    const recipientStatuses = Array.isArray(recipients)
+      ? recipients.map(recipient => ({
+        statusCode: Number.isFinite(Number(recipient?.statusCode))
+          ? Number(recipient.statusCode)
+          : null,
+        statusMessage: safeStatusMessage(
+          recipient?.statusMessage ?? recipient?.status,
+          [phone, code, env.AFRICASTALKING_API_KEY, env.AFRICASTALKING_USERNAME]
+        )
+      }))
+      : [];
+    const providerMessage = result?.SMSMessageData?.Message;
+    const providerReturnedError = !response.ok
+      || Boolean(result?.error || result?.Error || result?.ErrorMessage
+        || result?.SMSMessageData?.Error || result?.SMSMessageData?.ErrorMessage)
+      || recipientStatuses.some(recipient => ![100, 101, 102].includes(recipient.statusCode))
+      || (typeof providerMessage === "string" && !/^Sent to \d+\/\d+\b/i.test(providerMessage));
+    logger.info("Africa's Talking SMS response", JSON.stringify({
+      httpStatus: response.status,
+      providerReturnedError,
+      responseParsed: true,
+      hasExpectedRecipientData,
+      recipients: recipientStatuses
+    }));
+    const accepted = response.ok && !providerReturnedError && Array.isArray(recipients)
       && recipients.some(recipient =>
-        String(recipient.number).replace(/\s/g, "") === phone
+        recipient && typeof recipient === "object"
+        && normalizeRecipientNumber(recipient.number) === expectedPhone
         && [100, 101, 102].includes(Number(recipient.statusCode))
       );
     return accepted ? { ok: true } : { ok: false, error: "sms_send_failed" };
@@ -153,6 +191,26 @@ function createSmsVerification({
       return { ok: true };
     }
   };
+}
+
+function normalizeRecipientNumber(number) {
+  const digits = String(number || "").replace(/\D/g, "");
+  return digits.startsWith("0") && digits.length === 10
+    ? `254${digits.slice(1)}`
+    : digits;
+}
+
+function safeStatusMessage(message, secrets) {
+  if (typeof message !== "string") return null;
+  let safeMessage = message;
+  for (const secret of secrets) {
+    if (secret) safeMessage = safeMessage.replaceAll(secret, "[redacted]");
+  }
+  return safeMessage
+    .replace(/\+?\d[\d\s().-]{7,}\d/g, "[redacted]")
+    .replace(/\b\d{6,}\b/g, "[redacted]")
+    .replace(/[\r\n\t]+/g, " ")
+    .slice(0, 120);
 }
 
 module.exports = { createSmsVerification, isKenyanPhone };
