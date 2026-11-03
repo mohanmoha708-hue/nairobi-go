@@ -95,8 +95,10 @@ function createSmsVerification({
     }
     const recipients = result?.SMSMessageData?.Recipients;
     const accepted = response.ok && Array.isArray(recipients)
-      && recipients.some(recipient => recipient.number === phone
-        && (recipient.statusCode === 101 || recipient.status === "Success"));
+      && recipients.some(recipient =>
+        String(recipient.number).replace(/\s/g, "") === phone
+        && [100, 101, 102].includes(Number(recipient.statusCode))
+      );
     return accepted ? { ok: true } : { ok: false, error: "sms_send_failed" };
   }
 
